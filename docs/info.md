@@ -8,22 +8,22 @@ This is an `8-bit` cpu along with a bootloader and IO capability
 > `ISA`:
 
 ```
-instruction || 7:7 | 6:5  | 4:4   | 3:0      || elaboration
-==========================================================================
-add         || 0   | 00   | x     | x        || register_a = reg_a + reg_b
---------------------------------------------------------------------------
+instruction || 7:7 | 6:5  | 4:4   | 3:0      || register elaboration
+======================================================================
+add         || 0   | 00   | x     | x        || reg_a = reg_a + reg_b
+----------------------------------------------------------------------
 add 1       || 0   | 01   | x     | x        || reg_a = reg_a + 1
---------------------------------------------------------------------------
+----------------------------------------------------------------------
 and         || 0   | 10   | x     | x        || reg_a = reg_a & reg_b
---------------------------------------------------------------------------
+----------------------------------------------------------------------
 not         || 0   | 11   | x     | x        || reg_a = ~reg_a
---------------------------------------------------------------------------
-jmp         || 1   | 00   | x     | address  || program_counter = address
---------------------------------------------------------------------------
-store       || 1   | 01   | x     | address  || data_mem[address] = reg_a
---------------------------------------------------------------------------
-load        || 1   | 10   | x     | address  || reg_b = data_mem[address]
---------------------------------------------------------------------------
+----------------------------------------------------------------------
+jmp         || 1   | 00   | x     | address  || program_counter = addr
+----------------------------------------------------------------------
+store       || 1   | 01   | x     | address  || data_mem[addr] = reg_a
+----------------------------------------------------------------------
+load        || 1   | 10   | x     | address  || reg_b = data_mem[addr]
+----------------------------------------------------------------------
 nop         || 1   | 11   | x     | x        || 
 ```
 
@@ -38,6 +38,10 @@ Plug in the `USBC2UART` converter, and use `ls /devttyUSB*` to find out which in
 
 Plug in the `USBC2UART` and connect the `TX`/`RX`/`GND` wires correctly, then program the CPU with a list of instructions:
 ```
-chmod a+x *.sh
+# Repeated ADD 1
 python programmer.py -p /dev/ttyUSB2 -b 115200 -i "[0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20]"
+# LOAD, ADD 1, STORE, LOAD, repeating NOP
+python programmer.py -p /dev/ttyUSB2 -b 115200 -i "[0xC0, 0x20, 0xA0, 0xC0, 0xFF, 0xFF, 0xFF, 0xFF]"
+# ADD 1, JUMP to 5, repeating ADD 1
+python programmer.py -p /dev/ttyUSB2 -b 115200 -i "[0x20, 0x85, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20]"
 ```

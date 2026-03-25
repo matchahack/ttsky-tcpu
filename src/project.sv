@@ -22,7 +22,7 @@ module tt_um_tcpu_alienflip (
   assign uio_oe      = '0;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, uio_in[7:0], 1'b0};
+  wire _unused = &{ena, uio_in[7:0], ui_in[7:1], 1'b0};
 
   control control_u (
     .clk(clk),

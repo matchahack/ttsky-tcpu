@@ -38,7 +38,7 @@ end
 
 // RX state machine
 always @(posedge i_Clock) begin
-    if (rst_n) begin
+    if (!rst_n) begin
         o_Rx_Byte <= '0;
         o_Rx_DV       <= 1'b0;
         r_Clock_Count <= 0;

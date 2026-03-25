@@ -1,10 +1,6 @@
 //////////////////////////////////////////////////////////////////////
 // File Downloaded from http://www.nandland.com
 //////////////////////////////////////////////////////////////////////
-// This file contains the UART Transmitter.  This transmitter is able
-// to transmit 8 bits of serial data, one start bit, one stop bit,
-// and no parity bit.  When transmit is complete o_Tx_done will be
-// driven high for one clock cycle.
   
 module uart_tx #(
    parameter CLKS_PER_BIT = 217 // 25 mHZ
@@ -32,7 +28,7 @@ reg          r_Tx_Done     = 0;
 reg          r_Tx_Active   = 0;
     
 always @(posedge i_Clock) begin
-    if (rst_n) begin
+    if (!rst_n) begin
         o_Tx_Serial   <= 1'b1;         // Drive Line High for Idle
         r_Tx_Done     <= 1'b0;
         r_Clock_Count <= 0;

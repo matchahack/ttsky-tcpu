@@ -1,4 +1,3 @@
-
 module compute_top #(
     parameter MEM_DEPTH = 7
 )(

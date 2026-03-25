@@ -1,4 +1,5 @@
-#!/usr/bin/env python3
+# SPDX-FileCopyrightText: © 2024 Kai Harris
+# SPDX-License-Identifier: Apache-2.0
 
 import cocotb
 from cocotbext.uart import UartSource, UartSink
@@ -10,7 +11,7 @@ from cocotb.triggers import RisingEdge
 # ---------------------------------------------------------------------------
 
 CLK_PERIOD_NS = 20 # 50 MHz
-RESET_CYCLES  = int(1e1)
+RESET_CYCLES  = 10
 SETTLE_CYCLES = int(1e5)
 BAUD_RATE     = 115200
 UART_BITS     = 8
@@ -26,11 +27,11 @@ async def reset_dut(dut):
     dut.ena.value = 1
     dut.ui_in.value = 0
     dut.uio_in.value = 0
-    dut.uart_rx.value = 1
-    dut.rst_n.value = 1
+    dut.uart_rx.value = 0
+    dut.rst_n.value = 0
     for _ in range(RESET_CYCLES):
         await RisingEdge(dut.clk)
-    dut.rst_n.value = 0
+    dut.rst_n.value = 1
 
 async def run_program(dut, bytes_: list[int], description: str):
     """Upload *bytes_* over UART, wait for the result, and log data_in/data_out."""
@@ -42,4 +43,4 @@ async def run_program(dut, bytes_: list[int], description: str):
     await uart_source.wait()
     for _ in range(SETTLE_CYCLES):
         await RisingEdge(dut.clk)
-    await uart_sink.read()
+    await uart_sink.read_nowait()

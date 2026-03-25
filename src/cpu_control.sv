@@ -57,7 +57,7 @@ module cpu_control #(
     // Sequential logic
     // ========================
     always_ff @(posedge clk) begin
-        if (rst) begin
+        if (!rst) begin
             state                <= IDLE;
             program_counter      <= '0;
             reg_a                <= '0;

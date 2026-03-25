@@ -1,5 +1,5 @@
 
-module chip_top #(
+module compute_top #(
     parameter MEM_DEPTH = 7
 )(
     input  logic       clk,
@@ -15,9 +15,9 @@ module chip_top #(
     logic bootload_done;
     logic [8*(MEM_DEPTH+1)-1:0] program_mem_flat;
 
-    data_load #(
+    bootloader #(
         .MEM_DEPTH(MEM_DEPTH)
-    ) data_load_u (
+    ) bootloader_u (
         .clk(clk),
         .rst(rst),
         .bootload_done(bootload_done),

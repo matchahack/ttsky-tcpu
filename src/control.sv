@@ -16,9 +16,9 @@ module control (
 // (25000000)/(115200)  = 217
 parameter CLKS_PER_BIT = 217;
 
-io_core_interface #(
+base_interface #(
     .CLKS_PER_BIT(CLKS_PER_BIT)
-) io_core_interface_u (
+) base_interface_u (
     .clock(clk),
     .nreset(rst_n),
     .rx_serial_i(rx_serial),

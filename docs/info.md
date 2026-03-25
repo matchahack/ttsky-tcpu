@@ -1,9 +1,11 @@
-## How it works
+# tcpu
 
 > [!NOTE]
 This is an `8-bit` cpu along with a bootloader and IO capability
 
-> ISA:
+## How it works
+
+> `ISA`:
 
 ```
 instruction || 7:7 | 6:5  | 4:4   | 3:0      || elaboration
@@ -27,16 +29,14 @@ nop         || 1   | 11   | x     | x        ||
 
 ## External hardware
 
-> You will need a `USBC` to `UART` converter to program this CPU. [This is how to make your own](https://github.com/matchahack/usbc2uart.up). Or just buy a cheap one online.
+You will need a `USBC` to `UART` converter to program this CPU. [This is how to make your own](https://github.com/matchahack/usbc2uart.up). Or just buy a cheap one online.
 
 > [!IMPORTANT]
 Plug in the `USBC2UART` converter, and use `ls /devttyUSB*` to find out which interface to use for programming.
 
 ## How to test
 
-> Plug in the `USBC2UART` and connect the `TX`/`RX`/`GND` wires correctly 
-
-> Program the CPU with a list of instructions:
+Plug in the `USBC2UART` and connect the `TX`/`RX`/`GND` wires correctly, then program the CPU with a list of instructions:
 ```
 chmod a+x *.sh
 python programmer.py -p /dev/ttyUSB2 -b 115200 -i "[0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20]"

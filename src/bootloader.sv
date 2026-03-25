@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
  
-module data_load #(
+module bootloader #(
     parameter  MEM_DEPTH = 7,
     localparam PC_SIZE   = 3 // $clog2(MEM_DEPTH + 1)
 )(

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
  
-module io_core_interface #(
+module base_interface #(
     parameter CLKS_PER_BIT = 217
 )(
     input  logic clock,
@@ -24,9 +24,9 @@ uart_rx #(
     .o_Rx_Byte(rx_data_o)
 );
 
-chip_top #(
+compute_top #(
     .MEM_DEPTH(7)
-) chip_top_u (
+) compute_top_u (
     .clk(clock),
     .rst(nreset),
     .uart_rx_valid(rx_valid_o),

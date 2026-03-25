@@ -15,7 +15,8 @@ module control (
 // Example: 25 MHz Clock, 115200 baud UART
 // (25000000)/(115200)  = 217
 // (50000000)/(115200)  = 434
-parameter CLKS_PER_BIT = 434;
+// (10000000)/(115200)  = 86 
+parameter CLKS_PER_BIT = 86;
 
 base_interface #(
     .CLKS_PER_BIT(CLKS_PER_BIT)

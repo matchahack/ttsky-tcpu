@@ -4,15 +4,15 @@
 import cocotb
 from cocotbext.uart import UartSource, UartSink
 from cocotb.clock import Clock
-from cocotb.triggers import RisingEdge
+from cocotb.triggers import ClockCycles, RisingEdge
 
 # ---------------------------------------------------------------------------
 # Constants
 # ---------------------------------------------------------------------------
 
-CLK_PERIOD_NS = 20 # 50 MHz
+CLK_PERIOD_NS = 100 # 10 MHz
 RESET_CYCLES  = 10
-SETTLE_CYCLES = int(1e3)
+SETTLE_CYCLES = int(1e5)
 BAUD_RATE     = 115200
 UART_BITS     = 8
 
@@ -40,5 +40,7 @@ async def run_program(dut, bytes_: list[int], description: str):
     uart_sink   = UartSink(dut.uart_tx,   baud=BAUD_RATE, bits=UART_BITS)
     dut._log.info(f"\nRunning program: {description}")
     await uart_source.write(bytes_)
-    for i in range(7):
-        await uart_sink.read()
+    await uart_source.wait()
+    for _ in range(SETTLE_CYCLES):
+        await RisingEdge(dut.clk)
+    await uart_sink.read()

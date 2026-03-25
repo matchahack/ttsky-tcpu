@@ -19,12 +19,12 @@ project:
   source_files:
     - "project.sv"
     - "control.sv"
-    - "rtl/io_core_interface.sv"
-    - "rtl/io/uart_rx.sv"
-    - "rtl/io/uart_tx.sv"
-    - "rtl/core/chip_top.sv"
-    - "rtl/core/drivers/cpu_control.sv"
-    - "rtl/core/drivers/data_load.sv"
+    - "io_core_interface.sv"
+    - "uart_rx.sv"
+    - "uart_tx.sv"
+    - "chip_top.sv"
+    - "drivers/cpu_control.sv"
+    - "drivers/data_load.sv"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).

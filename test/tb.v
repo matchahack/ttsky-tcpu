@@ -15,6 +15,8 @@ module tb ();
 
   // Wire up the inputs and outputs:
   reg clk;
+  reg uart_rx;
+  reg uart_tx;
   reg rst_n;
   reg ena;
   reg [7:0] ui_in;
@@ -27,13 +29,7 @@ module tb ();
   wire VGND = 1'b0;
 `endif
 
-  // UART single-bit wires for cocotb
-  wire uart_rx;
-  wire uart_tx;
-  assign ui_in[0] = uart_rx;   // DUT reads from bit 0
-  assign uart_tx = uo_out[0];  // DUT writes to bit 0
-
-  tt_um_tcpu_alienflip user_project (
+  tt_um_tcpu_alienflip tcpu (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
@@ -41,8 +37,8 @@ module tb ();
       .VGND(VGND),
 `endif
 
-      .ui_in  (ui_in),    // Dedicated inputs
-      .uo_out (uo_out),   // Dedicated outputs
+      .ui_in  ({ui_in[7:1], uart_rx}),    // Dedicated inputs
+      .uo_out ({uo_out[7:1], uart_tx}),   // Dedicated outputs
       .uio_in (uio_in),   // IOs: Input path
       .uio_out(uio_out),  // IOs: Output path
       .uio_oe (uio_oe),   // IOs: Enable path (active high: 0=input, 1=output)

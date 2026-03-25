@@ -1,40 +1,51 @@
-# SPDX-FileCopyrightText: © 2024 Tiny Tapeout
+# SPDX-FileCopyrightText: © 2024 Kai Harris
 # SPDX-License-Identifier: Apache-2.0
 
 import cocotb
-from cocotb.clock import Clock
-from cocotb.triggers import ClockCycles
+from uart import run_program
 
+# ---------------------------------------------------------------------------
+# Programs
+# ---------------------------------------------------------------------------
+
+PROGRAMS = {
+    "add_1":                      ([0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20], "Repeated ADD 1"),
+    "add_1_nop":                  ([0x20, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF], "ADD 1 then repeating NOP"),
+    "load_add_1_store":           ([0xC0, 0x20, 0xA0, 0xC0, 0xFF, 0xFF, 0xFF, 0xFF], "LOAD, ADD 1, STORE, LOAD, repeating NOP"),
+    "not_add_1_not":              ([0x60, 0x20, 0x60, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF], "NOT, ADD 1, NOT, repeating NOP"),
+    "add_jump_add":               ([0x20, 0x85, 0x20, 0x20, 0x20, 0x20, 0x20, 0x20], "ADD 1, JUMP to 5, repeating ADD 1"),
+    "add_1_store_add_1_load_and": ([0x20, 0xA0, 0x20, 0xC0, 0x40, 0xFF, 0xFF, 0xFF], "ADD 1, STORE, ADD 1, LOAD, AND, repeating NOP"),
+    "add_1_store_add_1_load_add": ([0x20, 0xA0, 0x20, 0xC0, 0x00, 0xFF, 0xFF, 0xFF], "ADD 1, STORE, ADD 1, LOAD, ADD, repeating NOP")
+}
+
+# ---------------------------------------------------------------------------
+# Test entry points
+# ---------------------------------------------------------------------------
 
 @cocotb.test()
-async def test_project(dut):
-    dut._log.info("Start")
+async def add_1_program(dut):
+    await run_program(dut, *PROGRAMS["add_1"])
 
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, unit="us")
-    cocotb.start_soon(clock.start())
+@cocotb.test()
+async def add_1_nop_program(dut):
+    await run_program(dut, *PROGRAMS["add_1_nop"])
 
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
+@cocotb.test()
+async def load_add_1_store_load_program(dut):
+    await run_program(dut, *PROGRAMS["load_add_1_store"])
 
-    dut._log.info("Test project behavior")
+@cocotb.test()
+async def not_add_1_not_program(dut):
+    await run_program(dut, *PROGRAMS["not_add_1_not"])
 
-    # Set the input values you want to test
-    dut.ui_in.value = 20
-    dut.uio_in.value = 30
+@cocotb.test()
+async def add_jump_add_program(dut):
+    await run_program(dut, *PROGRAMS["add_jump_add"])
 
-    # Wait for one clock cycle to see the output values
-    await ClockCycles(dut.clk, 1)
+@cocotb.test()
+async def add_1_store_add_1_load_and(dut):
+    await run_program(dut, *PROGRAMS["add_1_store_add_1_load_and"])
 
-    # The following assersion is just an example of how to check the output values.
-    # Change it to match the actual expected output of your module:
-    assert dut.uo_out.value == 50
-
-    # Keep testing the module by changing the input values, waiting for
-    # one or more clock cycles, and asserting the expected output values.
+@cocotb.test()
+async def add_1_store_add_1_load_add(dut):
+    await run_program(dut, *PROGRAMS["add_1_store_add_1_load_add"])

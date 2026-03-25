@@ -27,8 +27,13 @@ module tb ();
   wire VGND = 1'b0;
 `endif
 
-  // Replace tt_um_example with your module name:
-  tt_um_example user_project (
+  // UART single-bit wires for cocotb
+  wire uart_rx;
+  wire uart_tx;
+  assign ui_in[0] = uart_rx;   // DUT reads from bit 0
+  assign uart_tx = uo_out[0];  // DUT writes to bit 0
+
+  tt_um_tcpu_alienflip user_project (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST

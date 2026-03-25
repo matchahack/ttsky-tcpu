@@ -1,5 +1,3 @@
-`include "data_load.sv"
-`include "cpu_control.sv"
 
 module chip_top #(
     parameter MEM_DEPTH = 7

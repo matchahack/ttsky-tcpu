@@ -3,7 +3,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-`include "control.sv"
 `default_nettype none
 
 module tt_um_tcpu_alienflip (

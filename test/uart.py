@@ -40,6 +40,5 @@ async def run_program(dut, bytes_: list[int], description: str):
     uart_sink   = UartSink(dut.uart_tx,   baud=BAUD_RATE, bits=UART_BITS)
     dut._log.info(f"\nRunning program: {description}")
     await uart_source.write(bytes_)
-    for _ in range(SETTLE_CYCLES):
-        await RisingEdge(dut.clk)
-    uart_sink.read_nowait()
+    for i in range(7):
+        await uart_sink.read()

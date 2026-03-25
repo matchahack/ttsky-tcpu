@@ -1,11 +1,13 @@
 # tcpu
 
 > [!NOTE]
-This is an `8-bit` cpu along with a bootloader and IO capability
+This is an `8-bit` CPU, with an integrated bootloader, and IO capability via UART
+
+It is an accumulator style CPU, with two registers, a small amount of internal memory
 
 ## How it works
 
-> `ISA`:
+The `ISA` is described here:
 
 ```
 instruction || 7:7 | 6:5  | 4:4   | 3:0      || register elaboration

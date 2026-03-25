@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
  
-`include "rtl/io_core_interface.sv"
+`include "io_core_interface.sv"
 
 module control (
     input   logic clk,

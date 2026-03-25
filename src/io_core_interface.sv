@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
  
-`include "rtl/core/chip_top.sv"
-`include "rtl/io/uart_tx.sv"
-`include "rtl/io/uart_rx.sv"
+`include "chip_top.sv"
+`include "uart_tx.sv"
+`include "uart_rx.sv"
 
 module io_core_interface #(
     parameter CLKS_PER_BIT = 217

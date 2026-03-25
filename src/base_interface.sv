@@ -32,7 +32,6 @@ compute_top #(
     .rst(nreset),
     .uart_rx_valid(rx_valid_o),
     .uart_tx_done(tx_done_o),
-    .uart_tx_active(tx_active_o),
     .data_in(rx_data_o),
     .data_out(tx_data_i),
     .data_valid(tx_valid_i)

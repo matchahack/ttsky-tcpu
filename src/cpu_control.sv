@@ -11,7 +11,6 @@ module cpu_control #(
     input  logic                       rst,
     input  logic                       bootload_done,
     input  logic                       uart_tx_done,
-    input  logic                       uart_tx_active,
     input  logic [8*(MEM_DEPTH+1)-1:0] program_mem_flat,
     output logic                       data_valid,
     output logic [7:0]                 trace
@@ -39,6 +38,10 @@ module cpu_control #(
 
     logic [7:0] data_mem    [MEM_DEPTH:0];
     logic [7:0] program_mem [MEM_DEPTH:0];
+
+    logic unused_bits;
+    assign unused_bits = ^instruction_register[4:3];
+
 
     // ========================
     // Program memory unpack

@@ -5,6 +5,9 @@ import cocotb
 from cocotbext.uart import UartSource, UartSink
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles, RisingEdge
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -32,6 +35,8 @@ async def reset_dut(dut):
     for _ in range(RESET_CYCLES):
         await RisingEdge(dut.clk)
     dut.rst_n.value = 1
+    for _ in range(RESET_CYCLES):
+        await RisingEdge(dut.clk)
 
 async def run_program(dut, bytes_: list[int], description: str):
     """Upload *bytes_* over UART, wait for the result, and log data_in/data_out."""
@@ -41,6 +46,6 @@ async def run_program(dut, bytes_: list[int], description: str):
     dut._log.info(f"\nRunning program: {description}")
     await uart_source.write(bytes_)
     await uart_source.wait()
-    for _ in range(SETTLE_CYCLES):
+    for i in range(SETTLE_CYCLES):
         await RisingEdge(dut.clk)
-    await uart_sink.read()
+    await uart_sink.read(7)

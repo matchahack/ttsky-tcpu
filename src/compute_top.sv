@@ -5,7 +5,6 @@ module compute_top #(
     input  logic       rst,
     input  logic       uart_rx_valid,
     input  logic       uart_tx_done,
-    input  logic       uart_tx_active,
     input  logic [7:0] data_in,
     output logic [7:0] data_out,
     output logic       data_valid
@@ -32,7 +31,6 @@ module compute_top #(
         .rst(rst),
         .bootload_done(bootload_done),
         .uart_tx_done(uart_tx_done),
-        .uart_tx_active(uart_tx_active),
         .program_mem_flat(program_mem_flat),
         .data_valid(data_valid),
         .trace(data_out)

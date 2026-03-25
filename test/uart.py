@@ -11,7 +11,7 @@ from cocotb.triggers import RisingEdge
 
 CLK_PERIOD_NS = 20 # 50 MHz
 RESET_CYCLES  = int(1e1)
-SETTLE_CYCLES = int(1e3)
+SETTLE_CYCLES = int(1e5)
 BAUD_RATE     = 115200
 UART_BITS     = 8
 
@@ -22,6 +22,11 @@ UART_BITS     = 8
 async def reset_dut(dut):
     """Assert then deassert active-low reset."""
     cocotb.start_soon(Clock(dut.clk, CLK_PERIOD_NS, unit="ns").start())
+    dut._log.info("Reset")
+    dut.ena.value = 1
+    dut.ui_in.value = 0
+    dut.uio_in.value = 0
+    dut.uart_rx.value = 1
     dut.rst_n.value = 1
     for _ in range(RESET_CYCLES):
         await RisingEdge(dut.clk)

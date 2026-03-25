@@ -43,4 +43,4 @@ async def run_program(dut, bytes_: list[int], description: str):
     await uart_source.wait()
     for _ in range(SETTLE_CYCLES):
         await RisingEdge(dut.clk)
-    await uart_sink.read_nowait()
+    uart_sink.read_nowait()

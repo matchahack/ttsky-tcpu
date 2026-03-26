@@ -17,18 +17,22 @@ module tt_um_tcpu_alienflip (
 );
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out[7:1] = 7'b0;
+  wire tx_wire;
+
+  assign uo_out = {7'b0, tx_wire}; 
   assign uio_out     = '0;
   assign uio_oe      = '0;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, uio_in[7:0], ui_in[7:1], 1'b0};
+  wire _unused      = &{ena, 1'b0};
+  wire _unused_ui   = &{uio_in[7:0], 1'b0};
+  wire _unused_i    = &{ui_in[7:1], 1'b0};
 
   control control_u (
     .clk(clk),
     .rst_n(rst_n),
     .rx_serial(ui_in[0]),
-    .tx_serial(uo_out[0])
+    .tx_serial(tx_wire)
   );
 
 endmodule

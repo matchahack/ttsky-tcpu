@@ -72,7 +72,11 @@ async def run_program(dut, bytes_: list[int], description: str):
     for cycle in range(SETTLE_CYCLES):
         await RisingEdge(dut.clk)
 
-        tx_val = int(dut.uart_tx.value)
+        try:
+            tx_val = int(dut.uart_tx.value)
+        except ValueError:
+            tx_val = 0
+            dut._log.debug(f"uart_tx not ready: {dut.uart_tx.value}")
 
         # 🔍 Log ALL TX values occasionally (not just transitions)
         if cycle % 10000 == 0:
@@ -99,7 +103,7 @@ async def run_program(dut, bytes_: list[int], description: str):
         # -------------------------------------------------------------------
         dut._log.error("Timeout waiting for UART data")
         dut._log.error(f"Bytes received: {uart_sink.count()}")
-        dut._log.error(f"Final TX state: {int(dut.uart_tx.value)}")
+        dut._log.error(f"Final TX state: {dut.uart_tx.value}")
 
         # Dump partial data if any
         partial = []
